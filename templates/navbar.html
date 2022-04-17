@@ -1,0 +1,64 @@
+<style>
+    a{
+        /* text-decoration: none; */
+        color: aqua;
+    }
+
+    /* table{
+        margin: auto;
+        border-collapse: collapse;
+        font-size: 14px;
+    } */
+
+    ul{
+        margin: 10px;    
+        font-size: 14px;    
+        /* padding-left: 0px;
+        padding-right: 0;
+        margin-right: 0;
+        margin-left: 0px; */
+    }
+
+    li{
+        list-style: none;
+        display: inline;
+        padding-left: 30px;
+        margin-left: 30px;
+    }
+
+    /* .center{
+        text-align: center;
+    } */
+
+    .right{
+        float: right;
+    }
+    /* a.left{
+        text-align-last: left;
+    } */
+</style>
+
+<ul>
+    <li><a href="{% url 'admin:index' %}" class="center">Admin page</a></li>
+    <li><a href="{% url 'newadmin' %}" class="center">Newadmin page</a></li>
+    <li><a href="/" class="right">View site</a></li>
+</ul>
+
+<!-- <table cellspacing="1" cellpadding="10" height="30" width="300">
+    <tbody>
+        <td>
+            <a href="/" class="left">View site</a>
+        </td>
+        <td>
+            <a href="{% url 'admin:index' %}">Admin page</a>
+        </td>
+        <td>
+            <a href="{% url 'newadmin' %}">Newadmin page</a>
+        </td>
+    </tbody>
+</table> -->
+
+
+
+
+

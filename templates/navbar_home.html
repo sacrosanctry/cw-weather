@@ -1,0 +1,29 @@
+<style>
+    a {
+        /* text-decoration: none; */
+        color: aqua;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    /* a.left{
+        text-align-last: left;
+    } */
+</style>
+
+
+
+<table cellspacing="1" cellpadding="10" height="30" width="300">
+    <tbody>
+        <td>
+            <a href="{% url 'admin:index' %}">Admin page</a>
+        </td>
+        <td>
+            <a href="{% url 'newadmin' %}">Newadmin page</a>
+        </td>
+    </tbody>
+</table>

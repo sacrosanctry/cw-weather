@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}"> -->
+
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css?"{% now "U" %}>
+
+    <!-- <link rel="stylesheet" type="text/css" href='{% static '/css/main.css' %}?{% now "U" %}'> -->
+    
+    <title>weather</title>
+    
+</head>
+<body>
+    <!--TODO: цикл по id для меню выбора опций, нормально сделать id, центрировать navbar -->
+    <nav>
+        {% include 'navbar_home.html' %}
+    </nav>
+    
+    <h1>Weather forecast in Ukraine</h1>
+
+
+
+    <form name="city" method="post">
+        {% csrf_token %}
+        <p class="inline">Choose your city:</p>
+        <select class="inline" id="city" name="city" onchange="this.form.submit();">
+            <option selected disabled="true"> City </option>
+            {% for city in cities %}
+                <option value="{{city.name}}" name="city">{{city.name}}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    
+    {% if place.name != 0 and object.temperature != None %}
+    
+    <h2>City: {{ place.name }}</h2>
+    <table border="1" cellspacing="1" cellpadding="10" height="30" width="20">
+        <tbody>
+            <tr>
+                {% for city in cities %} <!--! not city in cities!!!!!!!!!!!!!!!! -->
+                    <td>
+                        <p class="temperature">{{ object.temperature }}°</p>
+                        <p>{% if object.time == 1 %}day{% elif object.time == 2 %}night{% endif %}</p>
+                        <p>{{ object.weather }}</p>
+                        <p>{{ object.date }}</p>
+                    </td>
+                    
+                {% endfor %}
+                
+            </tr>
+
+        </tbody>
+    </table>
+    {% endif %}
+
+
+</body>
+</html>

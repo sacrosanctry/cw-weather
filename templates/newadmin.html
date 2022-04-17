@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="{% static '/css/newadmin.css' %}">
+
+    <title>Newadmin</title>
+</head>
+<body>
+    <nav>
+        <!-- <a href="/" class="left">View page</a> -->
+        {% include 'navbar.html' %}
+    </nav>
+
+    <h1>Hello, {{request.user}}</h1>
+
+    <table border="1" cellspacing="1" cellpadding="10" height="30" width="20">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="/admin/weather_admin/city/">Citys</a>
+                </td>
+                <td>
+                    <a href="/admin/weather_admin/city/add/" class="addlink">Add</a>
+                </td>
+                <td>
+                    <a href="/admin/weather_admin/city/" class="changelink">Change</a>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="/admin/weather_admin/weather/">Weathers</a>
+                </td>
+                <td>
+                    <a href="/admin/weather_admin/weather/add/" class="addlink">Add</a>
+                </td>
+                <td>
+                    <a href="/admin/weather_admin/weather/" class="changelink">Change</a>
+                </td>
+            </tr>
+         
+        </tbody>
+    </table>
+    
+
+</body>
+</html>
