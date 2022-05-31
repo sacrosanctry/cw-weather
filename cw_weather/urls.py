@@ -18,10 +18,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from pages.views import home_view, newadmin_view
+from pages.views import home_view, newadmin_view, register
 
 urlpatterns = [
     path('', home_view, name='home'),
     path('newadmin/', newadmin_view, name='newadmin'),
     path('admin/', admin.site.urls),
+    path('register', register, name = 'register'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)   # for css

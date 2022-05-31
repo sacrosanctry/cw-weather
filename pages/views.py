@@ -1,14 +1,17 @@
 from django.shortcuts import render
 
+from django.contrib.auth.forms import UserCreationForm
+from weather_admin.forms import CustomUserCreationForm 
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.contrib import messages
+from django.shortcuts import redirect
 from weather_admin.models import Weather
 from weather_admin.models import City
 
 # Create your views here.
 
 def home_view(request, *args, **kwargs):
-
-    # obj = Weather.objects.get(id=1)
-    
 
     cities = City.objects.all()
 
@@ -20,9 +23,7 @@ def home_view(request, *args, **kwargs):
         city_name = request.POST.getlist('city')[0] # gets the first (0) element of list
         print(city_name)
 
-    
     # if place != None:
-
         place = City.objects.get(name=city_name)
         city_id = place.id
         print(city_id) 
@@ -34,13 +35,12 @@ def home_view(request, *args, **kwargs):
         city_id = 0
         place = 0
 
-
     #place = City.objects.get(name=city_name)
 
     context = {
         'object': weather_in_city,
         'weather_in_city': weather_in_city,
-        'city_id': city_id,
+        'city': city_id,
         'place': place,
         'cities': cities,
     }
@@ -50,3 +50,19 @@ def home_view(request, *args, **kwargs):
 
 def newadmin_view(request, *args, **kwargs):
     return render(request, "newadmin.html", {})
+
+
+def register(request):  
+    if request.POST == 'POST':  
+        form = CustomUserCreationForm()  
+        if form.is_valid():  
+            form.save()
+            messages.success(request, 'Account created successfully')
+            return redirect('register')
+            # messages.success(request, 'Account created successfully')  
+    else:  
+        form = CustomUserCreationForm()  
+    context = {  
+        'form':form  
+    }  
+    return render(request, 'register.html', context)  
