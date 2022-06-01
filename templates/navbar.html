@@ -1,14 +1,8 @@
-<style>
+<!-- <style>
     a{
         /* text-decoration: none; */
         color: aqua;
     }
-
-    /* table{
-        margin: auto;
-        border-collapse: collapse;
-        font-size: 14px;
-    } */
 
     ul{
         margin: 10px;    
@@ -26,39 +20,70 @@
         margin-left: 30px;
     }
 
-    /* .center{
-        text-align: center;
-    } */
-
     .right{
         float: right;
     }
-    /* a.left{
-        text-align-last: left;
-    } */
-</style>
+</style> -->
 
-<ul>
+<!--navbar-->
+<!-- <ul> 
     <li><a href="{% url 'admin:index' %}" class="center">Admin page</a></li>
     <li><a href="{% url 'newadmin' %}" class="center">Newadmin page</a></li>
+    <li><a href="{% url 'login' %}" class="center">Login page</a></li>
     <li><a href="/" class="right">View site</a></li>
-</ul>
+</ul> -->
 
+<!--navbar_home-->
 <!-- <table cellspacing="1" cellpadding="10" height="30" width="300">
     <tbody>
-        <td>
-            <a href="/" class="left">View site</a>
-        </td>
         <td>
             <a href="{% url 'admin:index' %}">Admin page</a>
         </td>
         <td>
             <a href="{% url 'newadmin' %}">Newadmin page</a>
         </td>
+        <td>
+            <a href="{% url 'register' %}">Register page</a>
+        </td>
+        <td>
+            <a href="{% url 'login' %}">Login page</a>
+        </td>
     </tbody>
 </table> -->
 
 
+<nav class="navbar navbar-dark" style="background-color: rgba(0, 255, 255, 0.152);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Weather forecast in Ukraine</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}">Admin page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'newadmin' %}">Newadmin page</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Sign up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Sign in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+            <!-- <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> -->
 
 

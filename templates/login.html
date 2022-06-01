@@ -19,30 +19,25 @@
 <body>
     {% include 'navbar.html' %}
 
-    <div class="login">
-    
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    
-        <h1>Welcome to the best weather forecast site!</h1>
-    
-        <form method="post">
-            {% csrf_token %}
-            username: <input type="text" name="Username"> <br>
-            email: <input type="email" name="Email"> <br>
-            password: <input type="password" name="Password"> <br>
-            confirm password: <input type="password" name="Password2"> <br>
-    
-            <input class="btn btn-outline-info" type="submit" value="Submit">
-        </form>
-    </div>
-    <p>Already have an account? <a href="{% url 'login' %}">Sign in</a>.</p>
-    
+    <h1>Sign in here</h1>
+    {% if error %}
+    <div style="color:red;">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input class="btn btn-outline-info" type="submit" value="Log in">
+    </form>
+
+
+
+
+
+
+
+    <p>New to our site? <a href="{% url 'register' %}">Create an account</a>.</p>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
         integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"

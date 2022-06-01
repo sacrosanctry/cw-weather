@@ -42,6 +42,8 @@ class MyUser(User):
     name = models.CharField(max_length=40)
     roles = models.ManyToManyField('Roles', blank=True, null=True)
 
+
+
 class Mailing(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     user_id = models.OneToOneField('MyUser', on_delete=models.CASCADE, blank=True, null=True)

@@ -6,60 +6,114 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/home.css?" {% now "U" %}> -->
+    <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
 
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}"> -->
-
-    <link rel="stylesheet" type="text/css" href="/static/css/home.css?"{% now "U" %}>
-
-    <!-- <link rel="stylesheet" type="text/css" href='{% static '/css/main.css' %}?{% now "U" %}'> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" /> -->
     
     <title>weather</title>
     
 </head>
 <body>
     <!--TODO: цикл по id для меню выбора опций, нормально сделать id, центрировать navbar -->
-    <nav>
-        {% include 'navbar_home.html' %}
-    </nav>
-    
-    <h1>Weather forecast in Ukraine</h1>
 
+    {% include 'navbar.html' %}
 
+    {% for msg in messages %}
+    <!-- <div id="msg">
+        {{message}}
+    </div> -->
+        <div class="alert alert-success alert-dismissible fade show" roll="alert"> <!--message for registration-->
 
-    <form name="city" method="post">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success!</strong> Indicates a successful or positive action.
+        </div>
+    {% endfor %}    
+
+    <h1 class="center">Weather forecast in Ukraine</h1>
+
+    <form class="center" name="city" method="get">
         {% csrf_token %}
         <p class="inline">Choose your city:</p>
-        <select class="inline" id="city" name="city" onchange="this.form.submit();">
-            <option selected disabled="true"> City </option>
+        <select class="inline" id="city" name="city" >
+            <option> City </option>
             {% for city in cities %}
                 <option value="{{city.name}}" name="city">{{city.name}}</option>
             {% endfor %}
         </select>
+            
+
+        {% csrf_token %}
+        <p class="inline">Choose the date:</p>
+        <select class="inline" id="date" name="date" >
+                   <option> Date </option>
+            {% for date in dates %}
+            <option value="{{date.date}}" name="date">{{date.date}}</option>
+            {% endfor %}
+        </select>
     </form>
 
-    
+    <form class="center" name="city" method="get">
+        {% csrf_token %}
+        <p></p>
+        <input class="btn btn-outline-info" type="submit" value="Submit"> <!--кнопка-->
+    </form>
+
+
+
+
+
+
+    <!-- <input type="search" class="input js-input" placeholder="пошук" autocomplete="off">
+    <input type="search" id="nav-filter" placeholder="Start typing to filter…" aria-label="Filter navigation items" class="">
+
+
+    <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info" type="submit">Search</button>
+    </form> -->
+
+
+
+
+
+
+
+
+
+        
+
     {% if place.name != 0 and object.temperature != None %}
     
-    <h2>City: {{ place.name }}</h2>
-    <table border="1" cellspacing="1" cellpadding="10" height="30" width="20">
+    <h2 class="center">City: {{ place.name }}</h2>
+    <table class="table_center" border="1" cellspacing="1" cellpadding="10" height="30" width="20">
         <tbody>
             <tr>
                 {% for city in cities %} <!--! not city in cities!!!!!!!!!!!!!!!! -->
+                <!-- for date in 7 -->
                     <td>
                         <p class="temperature">{{ object.temperature }}°</p>
                         <p>{% if object.time == 1 %}day{% elif object.time == 2 %}night{% endif %}</p>
                         <p>{{ object.weather }}</p>
                         <p>{{ object.date }}</p>
                     </td>
-                    
-                {% endfor %}
-                
+                <!-- endfor -->
+                {% endfor %}  
             </tr>
-
         </tbody>
     </table>
     {% endif %}
 
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+        crossorigin="anonymous"></script>
 </body>
 </html>

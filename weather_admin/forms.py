@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.forms.fields import EmailField  
 from django.forms.forms import Form  
   
-class CustomUserCreationForm(UserCreationForm):  
+class CustomUserCreationForm(UserCreationForm):  # !можно удалить
     username = forms.CharField(label='username', min_length=5, max_length=150)  
     email = forms.EmailField(label='email')  
     password1 = forms.CharField(label='password', widget=forms.PasswordInput)  
