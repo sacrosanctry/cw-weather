@@ -16,26 +16,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" /> -->
     
-    <title>weather</title>
+    <title>Weather</title>
     
 </head>
 <body>
-    <!--TODO: цикл по id для меню выбора опций, нормально сделать id -->
-
     {% include 'navbar.html' %}
 
     {% for msg in messages %}
-    <!-- <div id="msg">
-        {{message}}
-    </div> -->
         <div class="alert alert-success alert-dismissible fade show" roll="alert"> <!--message for registration-->
-
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Success!</strong> Indicates a successful or positive action.
         </div>
-    {% endfor %}    
+    {% endfor %}
 
+    {% if not_chosen_error == True %}
+        <div class="alert alert-warning" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            Choose your city and date.
+        </div>
+    {% endif %}    
+    
+    
+    <p></p>
     <h1 class="center">Weather forecast in Ukraine</h1>
+    <p></p>
 
     <form class="center" name="city" method="POST">
         {% csrf_token %}
@@ -46,11 +50,11 @@
                 <option value="{{city.name}}" name="city">{{city.name}}</option>
             {% endfor %}
         </select>
-            
+        <p></p>
 
     <form class="center" name="date" method="POST">
         <p class="inline">Choose the date:</p>
-        <select class="inline" id="date" name="date" > <!--onchange - send request to the server on the change of select box option-->
+        <select class="inline" id="date" name="date" > 
             <option> Date </option>
             {% for date in dates %}
                 <option value="{{date.date}}" name="date">{{date.date}}</option>
@@ -58,25 +62,26 @@
         </select>
 
         {% csrf_token %}
-        <p></p>
+        <p></p> <!--onchange - send request to the server on the change of select box option-->
         <input class="btn btn-outline-info" type="submit" value="Submit" onchange="this.form.submit();"> 
     </form>
-
-        
-
-    {% if place.name != 0 and object.temperature != None %}
     
+        
+    <!-- if place.name != 0 and object.temperature != None -->
+    {% if place.name != 0 and filtered_allweather != None %}
+    
+    <br><br>
+    <h2 class="center">{{ place.name }}</h2>
     <p></p>
-    <h2 class="center">City: {{ place.name }}</h2>
-    <table class="table_center" border="1" cellspacing="1" cellpadding="10" height="30" width="20">
+    <table class="table_center">
         <tbody>
             <tr>
-                {% for date in new_dates_list %}
-                    <td>
-                        <p class="temperature">{{ object.temperature }}°</p>
-                        <p>{% if object.time == 1 %}day{% elif object.time == 2 %}night{% endif %}</p>
-                        <p>{{ object.weather }}</p>
-                        <p>{{ object.date }}</p>
+                {% for w in filtered_allweather %}
+                    <td align="center" width="140">
+                        <p class="temperature">{{ w.temperature }}°</p>
+                        <p>{% if w.time == 1 %}day{% elif w.time == 2 %}night{% endif %}</p>
+                        <p>{{ w.weather }}</p>
+                        <p>{{ w.date }}</p>
                     </td>
                 {% endfor %}
             </tr>

@@ -8,6 +8,11 @@ h1 {
     font-weight: lighter;
 }
 
+/* td{
+    width: 600px;
+    text-align: center;
+} */
+
 .temperature {
     font-size: 30px;
     font-weight: bolder;
@@ -20,9 +25,13 @@ h1 {
 }
 
 .table_center {
+    text-align: center;
     margin: auto;
 }
 
+.right {
+    text-align: right;
+}
 /* .inline {
     display: inline;
 } */

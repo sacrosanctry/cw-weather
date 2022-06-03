@@ -10,10 +10,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="/static/css/newadmin.css?" {% now "U" %}>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/home.css?" {% now "U" %}> -->
     <!--my css file-->
 
-    <title>Newadmin</title>
+    <title>Registration</title>
 </head>
 
 <body>
@@ -29,19 +30,23 @@
         </ul>
         {% endif %}
     
-        <h1>Welcome to the best weather forecast site!</h1>
+        <p></p>
+        <h1 class="center">Welcome to the best weather forecast site!</h1>
+        <br><br><br>
     
-        <form method="post">
+        <form class="center" method="post">
             {% csrf_token %}
-            username: <input type="text" name="Username"> <br>
-            email: <input type="email" name="Email"> <br>
-            password: <input type="password" name="Password"> <br>
-            confirm password: <input type="password" name="Password2"> <br>
-    
+            username: <br> <input type="text" name="Username"> <br>
+            email: <br> <input type="email" name="Email"> <br>
+            password: <br> <input type="password" name="Password"> <br>
+            confirm password: <br> <input type="password" name="Password2"> <br>
+            <p></p>
             <input class="btn btn-outline-info" type="submit" value="Submit">
         </form>
     </div>
-    <p>Already have an account? <a href="{% url 'login' %}">Sign in</a>.</p>
+
+    <p></p>
+    <p class="center">Already have an account? <a class="text-decoration-none" href="{% url 'login' %}">Sign in</a>.</p>
     
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"

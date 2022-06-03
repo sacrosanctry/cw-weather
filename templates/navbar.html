@@ -55,6 +55,8 @@
 <nav class="navbar navbar-dark" style="background-color: rgba(0, 255, 255, 0.152);">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Weather forecast in Ukraine</a>
+        <p class="navbar-nav text-secondary fw-bold me-auto">///  Hello, {{request.user}}</p>
+        <!-- <a class="navbar-brand me-auto" href="">Hello, {{request.user}}</a> -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -64,9 +66,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admin:index' %}">Admin page</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="{% url 'newadmin' %}">Newadmin page</a>
-                </li>
+                </li> -->
                 <li>
                     <hr class="dropdown-divider">
                 </li>
