@@ -1,3 +1,4 @@
+from operator import truediv
 from django.shortcuts import render
 
 from django.contrib.auth.models import User #, values_list
@@ -6,8 +7,9 @@ from django.contrib.auth import login as auth_login
 from django.urls import reverse
 from django.contrib import messages
 from django.shortcuts import redirect
-from weather_admin.models import Weather, City, Date
+from weather_admin.models import Weather, City, Date, MyUser
 from datetime import datetime
+from django.contrib.auth import logout
 from django.utils.formats import get_format
 
 # Create your views here.
@@ -20,7 +22,6 @@ def parse_date(date_str):
             return datetime.strptime(date_str, item).date()
         except (ValueError, TypeError):
             continue
-
     return None
 
 
@@ -30,17 +31,6 @@ def home_view(request, *args, **kwargs):
     dates = Date.objects.all()
     all_weather = Weather.objects.all()
 
-    # city_id = City.objects.filter(name='Kyiv').first()
-    # temperature = Weather.objects.filter(city_id=city_id) #! Weather.city_id=city_id
-    # weather = Weather.objects.filter(id=1) # get a list of objects who have a given id
-
-    # city_name = request.POST.get('city') # gets the first (0) element of list
-    # # city_name = request.POST.get('city')
-    # # city_name = City.objects.filter(city_name=city_name)
-    # print(city_name)
-
-    # date_name = request.POST.getlist('date')[0]
-
     if request.method == 'POST': # form>select in home.html # POST method is used to transfer data from client to server in HTTP
 
         alldata = request.POST
@@ -48,7 +38,7 @@ def home_view(request, *args, **kwargs):
         date_name = alldata.get("date", "0")
         print(city_name)
 
-        if city_name != '0' and date_name != 'Date': # one of select options (city/date) is not chosen
+        if city_name != '0' and date_name != '0': # one of select options (city/date) is not chosen
 
             dates_list = list(dates) # convert query set to list
 
@@ -66,28 +56,23 @@ def home_view(request, *args, **kwargs):
             city_id = place.id
             print(city_id)
 
-            
-            # people = People.objects.order_by(name).filter(age__gt=65) # unevaluated
-            # people.query.set_limits(start, stop)  # still unevaluated
-            # for person in people:  # now its evaluated
-            #     person.do_the_thing()
-
-
             filtered_allweather = all_weather.order_by('date').filter(city__name=city_name)
-
             # ids = filtered_allweather.values_list('id', flat=True) # Cannot resolve keyword 'i' into field. Choices are: city, city_id, date, date_id, id, temperature, time, weather
-            chosen_date_id = filtered_allweather.get(date=query_date).id #! gets id from the first query set, not from filtered_allweather
-            # user = User.objects.get(username='Fokoa')
-            # user.id
-            # chosen_date_id = 2
-            done_weather = filtered_allweather.query.set_limits(low=chosen_date_id-1, high=chosen_date_id+6) #! low=chosen_date_id, high=chosen_date_id+7
+            date_not_exist_error = False
+            try:
+                chosen_date_id = filtered_allweather.get(date=query_date).id #! gets id from the first query set, not from filtered_allweather (для корректной работы добавлять даты в django-admin по порядку)
+                filtered_allweather.query.set_limits(low=chosen_date_id-1, high=chosen_date_id+6)
+            except Weather.DoesNotExist:
+                date_not_exist_error = True
 
-
-
+            # a = filtered_allweather.last().id
+            # b = filtered_allweather.first().id
+            # if (a-b) == 7:
+            #     week_weather = True
 
             # new_dates_list.filter('query_date')[:7] # error Cannot filter a query once a slice has been taken.
 
-            weather_in_city_list = []
+            # weather_in_city_list = []
             # for j, k in zip(new_dates_list, range(len(new_dates_list))):
             #     date_name2 = new_dates_list.get("date", "k")
             #     parsed_date2 = parse_date(date_name2)
@@ -98,8 +83,7 @@ def home_view(request, *args, **kwargs):
 
         else:
             not_chosen_error = True
-            weather_in_city = None
-            weather_in_city_list = None
+            date_not_exist_error = False
             filtered_allweather = None
             city_id = None
             place = None
@@ -107,8 +91,7 @@ def home_view(request, *args, **kwargs):
 
     else:
         not_chosen_error = False
-        weather_in_city = None
-        weather_in_city_list = None
+        date_not_exist_error = False
         filtered_allweather = None
         city_id = None
         place = None
@@ -116,16 +99,13 @@ def home_view(request, *args, **kwargs):
 
 
     context = {
-        # 'object1': weather_in_city,
-        # 'weather_in_city_list': weather_in_city_list,
-        'city': city_id,
         'cities': cities,
         'dates': dates,
         'place': place,
         'new_dates_list': new_dates_list,
         'not_chosen_error': not_chosen_error,
+        'date_not_exist_error': date_not_exist_error,
         'filtered_allweather': filtered_allweather,
-        'done_weather': done_weather
     }
     return render(request, "home.html", context)
     # "home.html" - template name, {} - context ({} - empty dictionary)
@@ -136,19 +116,37 @@ def newadmin_view(request, *args, **kwargs):
 
 
 def register_view(request):
+    user_created_message = False
+    unique_username_error = False
+    different_passwords_error = False
+    no_input_data_error = False
+
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
-        
-        if password == password2:
-            
-            User.objects.create_user(username, email, password)
-            messages.success(request, 'Account created successfully')
-            return redirect(reverse('home'))
-            
-    return render(request, 'register.html', {})
+        username = request.POST.get('Username')
+        email = request.POST.get('Email')
+        password = request.POST.get('Password')
+        password2 = request.POST.get('Password2')
+    
+        if username!='' and password!='' and password2!='':
+            if password == password2:
+                try:
+                    MyUser.objects.create_user(username, email, password)
+                    messages.success(request, 'Account created successfully')
+                    return redirect(reverse('home'))
+                except: #! IntegrityError
+                    unique_username_error = True
+            else:
+                different_passwords_error = True
+        else:
+            no_input_data_error = True # request was empty
+
+    context2 = {
+        'no_input_data_error': no_input_data_error,
+        'different_passwords_error': different_passwords_error,
+        'user_created_message': user_created_message,
+        'unique_username_error': unique_username_error,
+    }         
+    return render(request, 'register.html', context2)
 
 
 def login_view(request):
@@ -161,5 +159,10 @@ def login_view(request):
             return redirect('home')
         else:
             return redirect('login')    
-
     return render(request, 'login.html', {})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+

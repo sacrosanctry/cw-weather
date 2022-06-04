@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,9 +11,9 @@
 
     <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
     <!-- <link rel="stylesheet" type="text/css" href="/static/css/home.css?" {% now "U" %}> -->
-    <!--my css file-->
 
     <title>Sign in</title>
+    <link rel="shortcut icon" href="/static/icons/sun-256.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -24,22 +23,12 @@
     <h1 class="center">Sign in here</h1>
     <br><br><br>
 
-    {% if error %}
-    <div style="color:red;">{{ error }}</div>
-    {% endif %}
-
     <form class="center" method="post">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <input class="btn btn-outline-info" type="submit" value="Log in">
     </form>
-
-
-
-
-
-
 
     <p class="center">New to our site? <a class="text-decoration-none" href="{% url 'register' %}">Create an account</a>.</p>
 
@@ -50,5 +39,4 @@
         integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

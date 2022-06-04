@@ -1,62 +1,10 @@
-<!-- <style>
-    a{
-        /* text-decoration: none; */
-        color: aqua;
-    }
-
-    ul{
-        margin: 10px;    
-        font-size: 14px;    
-        /* padding-left: 0px;
-        padding-right: 0;
-        margin-right: 0;
-        margin-left: 0px; */
-    }
-
-    li{
-        list-style: none;
-        display: inline;
-        padding-left: 30px;
-        margin-left: 30px;
-    }
-
-    .right{
-        float: right;
-    }
-</style> -->
-
-<!--navbar-->
-<!-- <ul> 
-    <li><a href="{% url 'admin:index' %}" class="center">Admin page</a></li>
-    <li><a href="{% url 'newadmin' %}" class="center">Newadmin page</a></li>
-    <li><a href="{% url 'login' %}" class="center">Login page</a></li>
-    <li><a href="/" class="right">View site</a></li>
-</ul> -->
-
-<!--navbar_home-->
-<!-- <table cellspacing="1" cellpadding="10" height="30" width="300">
-    <tbody>
-        <td>
-            <a href="{% url 'admin:index' %}">Admin page</a>
-        </td>
-        <td>
-            <a href="{% url 'newadmin' %}">Newadmin page</a>
-        </td>
-        <td>
-            <a href="{% url 'register' %}">Register page</a>
-        </td>
-        <td>
-            <a href="{% url 'login' %}">Login page</a>
-        </td>
-    </tbody>
-</table> -->
-
-
-<nav class="navbar navbar-dark" style="background-color: rgba(0, 255, 255, 0.152);">
+<nav class="navbar navbar-dark" style="background-color: rgba(0, 255, 255, 0.200);">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Weather forecast in Ukraine</a>
+        {% if user.is_authenticated %}
         <p class="navbar-nav text-secondary fw-bold me-auto">///  Hello, {{request.user}}</p>
-        <!-- <a class="navbar-brand me-auto" href="">Hello, {{request.user}}</a> -->
+        <a class="nav-link text-secondary fw-bold"href="{% url 'logout' %}">/// Log out</a>
+        {% endif %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -66,9 +14,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admin:index' %}">Admin page</a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="{% url 'newadmin' %}">Newadmin page</a>
-                </li> -->
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -81,11 +26,4 @@
             </ul>
         </div>
     </div>
-</nav>
-
-            <!-- <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
-
-
+</nav><p></p>

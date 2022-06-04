@@ -17,45 +17,50 @@
     <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" /> -->
     
     <title>Weather</title>
-    
+    <link rel="shortcut icon" href="/static/icons/sun-256.ico" type="image/x-icon">
 </head>
+
 <body>
     {% include 'navbar.html' %}
 
     {% for msg in messages %}
-        <div class="alert alert-success alert-dismissible fade show" roll="alert"> <!--message for registration-->
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success!</strong> Indicates a successful or positive action.
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert"> <!--message for registration-->
+        <strong>Success!</strong> Indicates a successful or positive action.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
     {% endfor %}
 
     {% if not_chosen_error == True %}
-        <div class="alert alert-warning" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            Choose your city and date.
-        </div>
-    {% endif %}    
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Choose the city and date.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    {% endif %}
+    
+    {% if date_not_exist_error == True %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Sorry!</strong> The weather for the selected date does not exist.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+    {% endif %}
     
     
     <p></p>
     <h1 class="center">Weather forecast in Ukraine</h1>
-    <p></p>
+    <br>
 
     <form class="center" name="city" method="POST">
         {% csrf_token %}
-        <p class="inline">Choose your city:</p>
+        <p class="inline">Choose your city and date:</p>
         <select class="inline" id="city" name="city" >
             <option selected disabled="true"> City </option>
             {% for city in cities %}
                 <option value="{{city.name}}" name="city">{{city.name}}</option>
             {% endfor %}
         </select>
-        <p></p>
 
-    <form class="center" name="date" method="POST">
-        <p class="inline">Choose the date:</p>
         <select class="inline" id="date" name="date" > 
-            <option> Date </option>
+            <option selected disabled="true"> Date </option>
             {% for date in dates %}
                 <option value="{{date.date}}" name="date">{{date.date}}</option>
             {% endfor %}
@@ -67,11 +72,10 @@
     </form>
     
         
-    <!-- if place.name != 0 and object.temperature != None -->
-    {% if place.name != 0 and filtered_allweather != None %}
+    {% if place.name != 0 and filtered_allweather != None and date_not_exist_error != True %}
     
     <br><br>
-    <h2 class="center">{{ place.name }}</h2>
+    <h1 class="center">{{ place.name }}</h1>
     <p></p>
     <table class="table_center">
         <tbody>
@@ -79,9 +83,16 @@
                 {% for w in filtered_allweather %}
                     <td align="center" width="140">
                         <p class="temperature">{{ w.temperature }}°</p>
-                        <p>{% if w.time == 1 %}day{% elif w.time == 2 %}night{% endif %}</p>
+                        <!-- <p>% if w.time == 1 %day% elif w.time == 2 %night% endif %</p> -->
+                        <img src="/static/icons/{{ w.weather }}.svg" class="svg" fill="white" height="100" vertical-align="middle" width="100">
                         <p>{{ w.weather }}</p>
                         <p>{{ w.date }}</p>
+                        {% if user.is_active %}
+                        <p>{{ w.humidity }}
+                            <img src="/static/icons/water-128.ico" class="ico" fill="white" height="20" vertical-align="middle" width="20">
+                        </p>
+                        {% endif %}
+
                     </td>
                 {% endfor %}
             </tr>
